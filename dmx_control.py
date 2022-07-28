@@ -13,57 +13,39 @@ class Lights:
         self.dmx = Controller('/dev/ttyUSB0')  # Typical of Linux
         # dmx.set_channel(1, 255)  # Sets DMX channel 1 to max 255
         # dmx.submit()  # Sends the update to the controller
+        set_channels(1, 1, False)
     
-    def activate(self):
+    def set_channels(self, max_steps, step, activate)
         fixtures = self.fixtures["fixtures"]
-        set_channel = 1
-        step = 1
-        max_steps = 40
-        for s in range(max_steps):
-            for f in fixtures:
-                light = str(f)
-                channels = fixtures[light]
-                # print(channels)
-                for channel in channels:
-                    set_channel = int(channel)
-                    print(f"channels are:{channel}")
-                    values = channels[channel]
-                    distance = int(abs(values[1] - values[0]))
-                    step_distance = int(round(distance/40))
+        for f in fixtures:
+            light = str(f)
+            channels = fixtures[light]
+            # print(channels)
+            for channel in channels:
+                set_channel = int(channel)
+                # print(f"channels are:{channel}")
+                start_end = channels[channel]
+                distance = int(abs(start_end[1] - start_end[0]))
+                step_distance = int(round(distance/40))
+                if activate:
                     set_value = step * step_distance
-                    # print(f"step distance is {step_distance}")
-                    self.dmx.set_channel(set_channel, step_distance)  # Sets DMX channel 1 to max 255
-                
-            self.dmx.submit()  # Sends the update to the controller
-            time.sleep(1.5/max_steps)
-                # step +=1
-
-                # print(f"values of channel are {values}")
-            #     print(self.fixtures["fixtures"][str(light)])
-
-    def deactivate(self):
-        fixtures = self.fixtures["fixtures"]
-        set_channel = 1
+                else:
+                    set_value = (max_steps - step) * step_distance
+                # print(f"step distance is {step_distance}")
+                print(f"Set Channel: {set_channel}, Set Value: {set_value}")
+                self.dmx.set_channel(set_channel, set_value)  # Sets DMX channel 1 to max 255
+        
+    def light_fade(self, activate = False)
         step = 1
         max_steps = 40
         for s in range(max_steps):
-            for f in fixtures:
-                light = str(f)
-                channels = fixtures[light]
-                # print(channels)
-                for channel in channels:
-                    set_channel = int(channel)
-                    print(f"channels are:{channel}")
-                    values = channels[channel]
-                    distance = int(abs(values[1] - values[0]))
-                    step_distance = int(round(distance/40))
-                    set_value = (max_steps - step) * step_distance
-                    # print(f"step distance is {step_distance}")
-                    self.dmx.set_channel(set_channel, step_distance)  # Sets DMX channel 1 to max 255
+            set_channels(max_steps, step, activate)
+        
                 
+            step+= 1
+            print(f"step is:{step}")
             self.dmx.submit()  # Sends the update to the controller
             time.sleep(1.5/max_steps)
-                # step +=1
 
-                # print(f"values of channel are {values}")
+                # print(f"start_end of channel are {start_end}")
             #     print(self.fixtures["fixtures"][str(light)])
