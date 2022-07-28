@@ -3,8 +3,9 @@ import threading
 import time
 
 class Trigger:
-    def __init__(self, audio):
+    def __init__(self, audio, lights):
         self.audio = audio
+        self.lights = lights
         
         # GPIO STUFF IS TEMPORARY UNTIL THE PRESSURE PADS COME IN OR IF WE DO ARDUINO AND IT SENDS THE PINUP SIGNAL
         GPIO.setwarnings(False) # Ignore warning for now
@@ -17,6 +18,7 @@ class Trigger:
     
     def listen(self):
         print("starting listen")
+        self.audio.play("SCP-x3x.wav")
         # "active" boolean used to gate the trigger
         active = False
         while True:
@@ -24,13 +26,15 @@ class Trigger:
                 if not active:
                     print("Button was pushed!")
                     active = True
-                    self.audio.play("SCP-x3x.wav")
+                    self.audio.play("TheParting.wav")
+                    self.lights.activate()
                     time.sleep(1)
             if GPIO.input(10) != GPIO.HIGH:
                 if active:
                     print("Button was released")
                     active = False
-                    self.audio.play("TheParting.wav")
+                    self.audio.play("SCP-x3x.wav")
+                    self.lights.deactivate()
                     time.sleep(1)
                     
             # time.sleep(10)

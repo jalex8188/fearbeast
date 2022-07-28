@@ -7,7 +7,6 @@ button_gpio = 21
 button = Button(button_gpio, pull_up=False)
 
 mode = ""
-
 active = False
 
 
