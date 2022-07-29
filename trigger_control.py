@@ -27,14 +27,15 @@ class Trigger:
                     print("Button was pushed!")
                     active = True
                     self.audio.play("TheParting.wav")
-                    self.lights.activate()
+                    self.lights.light_fade(True)
                     time.sleep(1)
             if GPIO.input(10) != GPIO.HIGH:
                 if active:
                     print("Button was released")
                     active = False
                     self.audio.play("SCP-x3x.wav")
-                    self.lights.deactivate()
+                    self.lights.light_fade(False)
+                    # self.lights.deactivate()
                     time.sleep(1)
                     
             # time.sleep(10)
