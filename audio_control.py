@@ -22,7 +22,7 @@ class Audio:
         # print(f"asset is:{asset}")
         # print(f"pygame.mixer.Sound.play({asset})")
         try:
-            print("fading out")
+            # print("fading out")
             # fade out sounds before starting the next sound
             pygame.mixer.fadeout(1500)
             # setup the sound to play

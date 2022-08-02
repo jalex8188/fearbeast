@@ -32,14 +32,14 @@ class Lights:
                 # print(f"channel is:{channel}")
                 start_end = fixture[channel]
                 distance = int(abs(start_end[1] - start_end[0]))
-                print(f"distance is {distance}")
+                # print(f"distance is {distance}")
                 if distance == 0: # when the start and end value is the same, then set that the value to the start value, otherwise it becomes 0
                     set_value = (int(start_end[0]))
                 else: # do the math if there is a change
                     step_distance = ((distance/max_steps))
-                    print(f"step distance:{step_distance}")
+                    # print(f"step distance:{step_distance}")
                     if activate: # will go from start value to end value
-                        print(f"set_value = {step} * {step_distance})")
+                        # print(f"set_value = {step} * {step_distance})")
                         set_value = step * step_distance
                         # print(f"set_value is:{set_value}")
                         # if step == max_steps:
@@ -55,7 +55,7 @@ class Lights:
                     set_value = 0
                 set_value = int(set_value)
 
-                print(f"Set Channel: {set_channel}, Set Value: {set_value}")
+                # print(f"Set Channel: {set_channel}, Set Value: {set_value}")
                 self.dmx.set_channel(set_channel, set_value)  # Sets DMX channel 1 to max 255
         
     def light_fade(self, activate = False):
