@@ -37,7 +37,7 @@ class Lights:
                     set_value = (int(start_end[0]))
                 else: # do the math if there is a change
                     step_distance = ((distance/max_steps))
-                    # print(f"step distance:{step_distance}")
+                    print(f"step distance:{step_distance}")
                     if activate: # will go from start value to end value
                         # print(f"set_value = {step} * {step_distance})")
                         set_value = step * step_distance
@@ -55,7 +55,7 @@ class Lights:
                     set_value = 0
                 set_value = int(set_value)
 
-                # print(f"Set Channel: {set_channel}, Set Value: {set_value}")
+                print(f"Set Channel: {set_channel}, Set Value: {set_value}")
                 self.dmx.set_channel(set_channel, set_value)  # Sets DMX channel 1 to max 255
         
     def light_fade(self, activate = False):
@@ -88,4 +88,4 @@ class Lights:
         # else:
         #     print("in deactivate")
         #     self.set_channels(1, 1, False)
-        self.dmx.submit()  # Sends the update to the controller
+        # self.dmx.submit()  # Sends the update to the controller
