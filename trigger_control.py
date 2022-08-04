@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import threading
 import time
+import serial
 
 class Trigger:
     def __init__(self, audio, lights):
@@ -22,21 +23,21 @@ class Trigger:
         # "active" boolean used to gate the trigger
         active = False
         while True:
-            if GPIO.input(10) == GPIO.HIGH:
-                if not active:
-                    print("Button was pushed!")
-                    active = True
-                    self.audio.play("TheParting.wav")
-                    self.lights.light_fade(True)
-                    time.sleep(1)
-            if GPIO.input(10) != GPIO.HIGH:
-                if active:
-                    print("Button was released")
-                    active = False
-                    self.audio.play("SCP-x3x.wav")
-                    self.lights.light_fade(False)
-                    # self.lights.deactivate()
-                    time.sleep(1)
+            # if GPIO.input(10) == GPIO.HIGH:
+            #     if not active:
+            #         print("Button was pushed!")
+            #         active = True
+            #         self.audio.play("TheParting.wav")
+            #         self.lights.light_fade(True)
+            #         time.sleep(1)
+            # if GPIO.input(10) != GPIO.HIGH:
+            #     if active:
+            #         print("Button was released")
+            #         active = False
+            #         self.audio.play("SCP-x3x.wav")
+            #         self.lights.light_fade(False)
+            #         # self.lights.deactivate()
+            #         time.sleep(1)
                     
             # time.sleep(10)
             # time.sleep(10)
