@@ -2,42 +2,45 @@ import RPi.GPIO as GPIO
 import threading
 import time
 import serial
-
 class Trigger:
     def __init__(self, audio, lights):
         self.audio = audio
         self.lights = lights
+
+        self.activateAudio = "TheParting.wav"
+        self.deactivateAudio = "SCP-x3x.wav"
         
-        # GPIO STUFF IS TEMPORARY UNTIL THE PRESSURE PADS COME IN OR IF WE DO ARDUINO AND IT SENDS THE PINUP SIGNAL
-        GPIO.setwarnings(False) # Ignore warning for now
-        GPIO.setmode(GPIO.BOARD) # Use physical pin numbering
-        GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # Set pin 10 to be an input pin and set initial value to be pulled low (off)
+        self.ard = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+        self.ard.reset_input_buffer()
 
         # Start a listener thread as to not block up the rest of the software
         l = threading.Thread(target=self.listen, args=())
         l.start()
     
     def listen(self):
-        print("starting listen")
-        self.audio.play("SCP-x3x.wav")
+        print("starting trigger listen")
+        self.audio.play(self.activateAudio)
         # "active" boolean used to gate the trigger
         active = False
         while True:
-            # if GPIO.input(10) == GPIO.HIGH:
-            #     if not active:
-            #         print("Button was pushed!")
-            #         active = True
-            #         self.audio.play("TheParting.wav")
-            #         self.lights.light_fade(True)
-            #         time.sleep(1)
-            # if GPIO.input(10) != GPIO.HIGH:
-            #     if active:
-            #         print("Button was released")
-            #         active = False
-            #         self.audio.play("SCP-x3x.wav")
-            #         self.lights.light_fade(False)
-            #         # self.lights.deactivate()
-            #         time.sleep(1)
+            if self.ard.in_waiting > 0:
+                line = self.ard.readline().decode('utf-8').rstrip()
+                print(line)
+                if line == "ACTIVATED":
+                    if not active:
+                        # print("Button was pushed!")
+                        active = True
+                        self.audio.play(self.activateAudio)
+                        self.lights.light_fade(True)
+                        time.sleep(1)
+                if line == "DEACTIVATED":
+                    if active:
+                        # print("Button was released")
+                        active = False
+                        self.audio.play(self.deactivateAudio)
+                        self.lights.light_fade(False)
+                        # self.lights.deactivate()
+                        time.sleep(1)
                     
             # time.sleep(10)
             # time.sleep(10)

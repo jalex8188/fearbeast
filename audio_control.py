@@ -5,8 +5,8 @@ import time
 class Audio:
     def __init__(self):
         #init all the things needed for audio
-        pygame.mixer.pre_init(44100, -16, 1, 2048)
         pygame.init()
+        pygame.mixer.pre_init(44100, -16, 1, 2048)
         pygame.mixer.init()
         time.sleep(1)
 
@@ -14,7 +14,7 @@ class Audio:
     def play(self, asset):
         
         # which asset is being used?
-        print(asset)
+        # print(asset)
         # make the path relative to where this program is running
         path = os.path.dirname(os.path.realpath(__file__))
 
@@ -27,7 +27,7 @@ class Audio:
             pygame.mixer.fadeout(1500)
             # setup the sound to play
             sound = pygame.mixer.Sound("{}/{}".format(path, asset))
-            print(f"sound is {asset}")
+            # print(f"sound is {asset}")
             # play the sound
             pygame.mixer.Sound.play(sound, loops=-1, maxtime=0, fade_ms=1500)
         except Exception as err:

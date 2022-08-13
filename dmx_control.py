@@ -7,6 +7,7 @@ import threading
 #This isn't ready, will work on next
 class Lights:
     def __init__(self):
+        return
         l = open('lighting_changes.json')
         fixtures = json.load(l)
         self.fixtures = fixtures
@@ -20,6 +21,7 @@ class Lights:
 
     
     def set_channels(self, max_steps, step, activate):
+        return
         fixtures = self.fixtures["fixtures"]
         set_channel = 0
         for f in fixtures:
@@ -59,6 +61,7 @@ class Lights:
                 self.dmx.set_channel(set_channel, set_value)  # Sets DMX channel 1 to max 255
         
     def light_fade(self, activate = False):
+        return
         step = 1
         max_steps = 40
         old_time = time.time()

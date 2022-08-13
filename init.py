@@ -26,4 +26,5 @@ def init():
 #         audio.play("TheParting.wav")
 #         time.sleep(10)
 
+print("Starting ~/Fearbeast/init.py")
 init()
