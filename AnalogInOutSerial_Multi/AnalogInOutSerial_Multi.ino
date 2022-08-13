@@ -1,6 +1,6 @@
-const int numReadings = 10;
-const int threshold = 1000;   // an arbitrary threshold level that's in the range of the analog input
-const int thresholdLow = 800;   // an arbitrary threshold level that's in the range of the analog input
+ const int numReadings = 10;
+const int threshold = 1000;   // the threshold level that's will activate the trigger
+const int thresholdLow = 800;   // an threshold level that will deactivate the trigger 
 const int ledPin = 13;       // pin that the LED is attached to
 
 
@@ -37,18 +37,18 @@ void loop() {
       activated_sum += activated_array[i];
   }
 
-  if (activated_sum > 0) {
+  if (activated_sum > 0) { // the 0 and 1 will gate the trigger so it only sends its activation/deactivation once
     if (activated == 0) {
       digitalWrite(ledPin, HIGH);
-      Serial.println("ACTIVATED");
+      Serial.println("ACTIVATED"); // this string will trigger the raspberry pi
       activated = 1;
       }
     }
 
   else {
-    if (activated == 1) {
+    if (activated == 1) { // the 0 and 1 will gate the trigger so it only sends its activation/deactivation once
       digitalWrite(ledPin, LOW);
-      Serial.println("DEACTIVATED");
+      Serial.println("DEACTIVATED"); // this string will trigger the raspberry pi
       activated = 0;
     }
   }
@@ -64,7 +64,7 @@ void read_sensor(int analogInPin, int activated_array_num) {
 //    Serial.println(sensorValue);
     
     if (sensorValue > threshold) {
-      if (activated_array[activated_array_num] == 0) {
+      if (activated_array[activated_array_num] == 0) { // the 0 and 1 will gate the trigger so it only sends its activation/deactivation once
         Serial.print("PAD_ACTIVATED ");
         Serial.println(activated_array_num);
         (activated_array[activated_array_num]) = 1;
@@ -72,7 +72,7 @@ void read_sensor(int analogInPin, int activated_array_num) {
     }
 
     if (sensorValue < thresholdLow){
-      if (activated_array[activated_array_num] == 1) {
+      if (activated_array[activated_array_num] == 1) { // the 0 and 1 will gate the trigger so it only sends its activation/deactivation once
         Serial.print("PAD_DEACTIVATED ");
         Serial.println(activated_array_num);
         (activated_array[activated_array_num]) = 0;
