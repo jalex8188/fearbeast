@@ -1,4 +1,6 @@
 from rpi_ws281x import *
+import threading
+import time
 
 class Leds:
     led_count = 12  # Number of LED pixels.
@@ -32,12 +34,18 @@ class Leds:
             self.led_channel,
             self.led_strip,
         )
+        self.led_array.begin()
+
     
     def light_fade(self, activate = False):
+        led_activated = self.led_activated
+        led_deactivated = self.led_deactivated
         if activate:
+            # self.fade(led_deactivated[0], led_deactivated[1], led_deactivated[2], led_activated[0], led_activated[1], led_activated[2])
             f = threading.Thread(target=self.fade, args=(led_deactivated[0], led_deactivated[1], led_deactivated[2], led_activated[0], led_activated[1], led_activated[2]))
         else:
             f = threading.Thread(target=self.fade, args=(led_activated[0], led_activated[1], led_activated[2], led_deactivated[0], led_deactivated[1], led_deactivated[2]))
+            # self.fade(led_activated[0], led_activated[1], led_activated[2], led_deactivated[0], led_deactivated[1], led_deactivated[2])
         f.start()
     
     def fade(self, r1, g1, b1, r2, g2, b2):
@@ -45,12 +53,11 @@ class Leds:
         steps = self.led_steps
         interval = self.led_step_interval
         for k in range(1, steps + 1):
-            if self.led_pulse_enabled:
-                r = round(((r1 * (steps - k)) + (r2 * k)) / steps)
-                g = round(((g1 * (steps - k)) + (g2 * k)) / steps)
-                b = round(((b1 * (steps - k)) + (b2 * k)) / steps)
-                color = rpi_ws281x.Color(r, g, b)
-                time.sleep(interval)
-                for j in range(strip.numPixels()):
-                    strip.setPixelColor(j, color)
-                strip.show()
+            r = round(((r1 * (steps - k)) + (r2 * k)) / steps)
+            g = round(((g1 * (steps - k)) + (g2 * k)) / steps)
+            b = round(((b1 * (steps - k)) + (b2 * k)) / steps)
+            color = rpi_ws281x.Color(r, g, b)
+            time.sleep(interval)
+            for j in range(strip.numPixels()):
+                strip.setPixelColor(j, color)
+            strip.show()
