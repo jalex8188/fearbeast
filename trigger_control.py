@@ -3,9 +3,10 @@ import threading
 import time
 import serial
 class Trigger:
-    def __init__(self, audio, lights):
+    def __init__(self, audio, lights, leds):
         self.audio = audio
         self.lights = lights
+        self.leds = leds
 
         self.activateAudio = "TheParting.wav"
         self.deactivateAudio = "SCP-x3x.wav"
@@ -32,6 +33,7 @@ class Trigger:
                         active = True
                         self.audio.play(self.activateAudio)
                         self.lights.light_fade(True)
+                        self.leds.light_fade(True)
                         time.sleep(1)
                 if line == "DEACTIVATED":
                     if active:
@@ -39,6 +41,7 @@ class Trigger:
                         active = False
                         self.audio.play(self.deactivateAudio)
                         self.lights.light_fade(False)
+                        self.leds.light_fade(False)
                         # self.lights.deactivate()
                         time.sleep(1)
                     

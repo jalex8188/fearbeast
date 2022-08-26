@@ -1,6 +1,7 @@
 import pygame
 from audio_control import Audio
 from dmx_control import Lights
+from led_control import Leds
 from trigger_control import Trigger
 import time
 
@@ -8,9 +9,10 @@ def init():
     # setup the audio class to pass into the trigger class
     audio = Audio()
     lights = Lights()
+    leds = Leds()
     try:
         # passing in audio into the trigger
-        trigger = Trigger(audio, lights)
+        trigger = Trigger(audio, lights, leds)
     except Exception as err:
         print(f"Problem starting trigger: {err}")
 
